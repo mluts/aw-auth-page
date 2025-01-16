@@ -1,5 +1,8 @@
 (ns aw.view.common
-  (:require [clojure.string :as str]))
+  (:require
+   [clojure.string :as str]
+   [aw.session :as session]
+   [aw.route-helpers :as rh]))
 
 (defn- ensure-coll [v]
   (if (coll? v) v [v]))
@@ -26,3 +29,10 @@
                         (swap! state assoc-in (ensure-coll kp) (-> event .-target .-value)))}])
 
 (defn error-p [text] [:p {:class "pico-color-pink-500"} text])
+
+(defn sign-out [_e]
+  (session/deauthorize!)
+  (rh/redirect! :aw/signin))
+
+; (defn teaser []
+;   [:p "Sign-in in order to play pico8 games"])

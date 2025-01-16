@@ -1,5 +1,6 @@
 (ns aw.session
   (:require
+   [aw.route-helpers :as rh]
    [clojure.set :as set]
    [reagent.core :as r]))
 
@@ -10,6 +11,10 @@
 
 (defn authorize! []
   (reset! session authorized-session))
+
+(defn deauthorize! []
+  (reset! session unauthorized-session)
+  (rh/redirect! :aw/signin))
 
 (defn perms-ok?
   ([object-perms] (perms-ok? (:perms @session) object-perms))

@@ -3,6 +3,8 @@
    [reagent.core :as r]
    [reitit.frontend :as rf]
    [reitit.frontend.easy :as rfe]
+   [aw.session :as session]
+   [aw.route-helpers :as rh]
    [aw.view.frontpage :as frontpage]
    [aw.view.signin :as signin]
    [aw.view.signup :as signup]))
@@ -12,10 +14,12 @@
     {:name :aw/frontpage
      :perms #{:authorized-only}
      :view #'frontpage/view}]
+
    ["/signin"
     {:name :aw/signin
      :perms #{:unauthorized-only}
      :view #'signin/view}]
+
    ["/signup"
     {:name :aw/signup
      :perms #{:unauthorized-only}
@@ -30,17 +34,14 @@
   (rfe/start!
    router
    (fn [m]
-     (js/console.log "Current route:" m)
-     (reset! current-match m))
+     (when-not (session/perms-ok? (get-in m [:data :perms]))
+       (rh/redirect! :aw/signin))
+
+     (reset! current-match m)
+
+     (js/console.log "Current route:" m))
+
    {:use-fragment true}))
 
-(defn redirect! [{:keys [to push]}]
-  (if push
-    (rfe/push-state to)
-    (rfe/replace-state to)))
-
-(defn resolve-href [{:keys [to]}]
-  (rfe/href to))
-
-(comment
-  (deref current-match))
+(defn match-by-name [-name]
+  (rf/match-by-name router -name))
