@@ -5,5 +5,11 @@
   (shadow/repl :app))
 
 (comment
+ (require 'md5.core)
+
+ (md5.core/string->md5-hex "foo@example.com")
+
   (cljs-repl)
-  :cljs/quit)
+
+  :cljs/quit
+  )
