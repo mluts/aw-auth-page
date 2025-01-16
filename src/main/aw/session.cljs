@@ -8,5 +8,14 @@
 
 (def session (r/atom unauthorized-session))
 
-(defn perms-ok? [user-perms object-perms]
-  (set/superset? (or user-perms #{}) (or object-perms #{})))
+(defn authorize! []
+  (reset! session authorized-session))
+
+(defn perms-ok?
+  ([object-perms] (perms-ok? (:perms @session) object-perms))
+  ([user-perms object-perms]
+   (set/superset? (or user-perms #{}) (or object-perms #{}))))
+
+(comment
+ (deref session)
+ (perms-ok? #{:autho}))

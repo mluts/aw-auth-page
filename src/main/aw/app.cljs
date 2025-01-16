@@ -8,6 +8,6 @@
   (let [{:keys [view perms]} (:data @router/current-match)]
     [:main {:class "container"}
 
-     (if (session/perms-ok? (:perms @session/session) perms)
+     (if (session/perms-ok? perms)
        [view]
        [signin/view])]))

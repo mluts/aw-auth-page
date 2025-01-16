@@ -34,5 +34,13 @@
      (reset! current-match m))
    {:use-fragment true}))
 
+(defn redirect! [{:keys [to push]}]
+  (if push
+    (rfe/push-state to)
+    (rfe/replace-state to)))
+
+(defn resolve-href [{:keys [to]}]
+  (rfe/href to))
+
 (comment
   (deref current-match))
