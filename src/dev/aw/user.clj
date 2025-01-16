@@ -1,6 +1,9 @@
 (ns aw.user
   (:require [shadow.cljs.devtools.api :as shadow]))
 
+(defn cljs-repl []
+  (shadow/repl :app))
+
 (comment
-  (shadow/repl :app)
+  (cljs-repl)
   :cljs/quit)
