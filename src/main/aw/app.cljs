@@ -5,4 +5,6 @@
 
 (defn app []
   (let [view (rh/route-view @router/current-match)]
-    [:main {:class "container"} [view]]))
+    [:main {:class "container"}
+
+     [view @router/current-match]]))

@@ -33,6 +33,3 @@
 (defn sign-out [_e]
   (session/deauthorize!)
   (rh/redirect! :aw/signin))
-
-; (defn teaser []
-;   [:p "Sign-in in order to play pico8 games"])

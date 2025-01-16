@@ -6,6 +6,7 @@
    [aw.session :as session]
    [aw.route-helpers :as rh]
    [aw.view.frontpage :as frontpage]
+   [aw.view.game :as game]
    [aw.view.signin :as signin]
    [aw.view.signup :as signup]))
 
@@ -17,6 +18,11 @@
     {:name :aw/frontpage
      :perms #{:authorized-only}
      :view #'frontpage/view}]
+
+   ["/game/:game_id"
+    {:name :aw/game
+     :perms #{:authorized-only}
+     :view #'game/view}]
 
    ["/signin"
     {:name :aw/signin

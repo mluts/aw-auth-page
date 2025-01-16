@@ -23,6 +23,3 @@
 
 (defn authorized? []
   (set/subset? authorized-perms (:perms @session)))
-
-(defn unauthorized? []
-  (set/subset? unauthorized-perms (:perms @session)))

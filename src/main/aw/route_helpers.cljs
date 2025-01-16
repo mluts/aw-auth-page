@@ -1,8 +1,9 @@
 (ns aw.route-helpers
   (:require [reitit.frontend.easy :as rfe]))
 
-(defn resolve-href [to]
-  (rfe/href to))
+(defn resolve-href
+  ([to path-params] (rfe/href to path-params))
+  ([to] (rfe/href to)))
 
 (defn redirect! [to & [push]]
   (if push
@@ -14,6 +15,3 @@
 
 (defn route-view [match]
   (get-in match [:data :view]))
-
-(defn route-name [match]
-  (get-in match [:data :name]))
