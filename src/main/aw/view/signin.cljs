@@ -27,7 +27,7 @@
         (common/keyboard-input :username state {:flags #{:username}})
 
         (when (contains? (:errors @state) :password-incorrect)
-          (common/error-p "Password incorrect"))
+          (common/error-p "Username or password incorrect"))
         (common/keyboard-input :password state {:type :password
                                                 :flags #{:current-password}})
 

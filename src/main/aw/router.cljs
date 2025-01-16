@@ -9,6 +9,9 @@
    [aw.view.signin :as signin]
    [aw.view.signup :as signup]))
 
+(def default-authorized-route :aw/frontpage)
+(def default-unauthorized-route :aw/signin)
+
 (def routes
   [["/"
     {:name :aw/frontpage
@@ -30,18 +33,28 @@
 
 (defonce current-match (r/atom nil))
 
+(defn match-by-name [-name]
+  (rf/match-by-name router -name))
+
 (defn init! []
   (rfe/start!
    router
    (fn [m]
-     (when-not (session/perms-ok? (get-in m [:data :perms]))
-       (rh/redirect! :aw/signin))
+     (cond
+       (and (not (session/perms-ok? (rh/route-perms m)))
+            (session/authorized?))
+       (do
+         (reset! current-match (match-by-name default-authorized-route))
+         (rh/redirect! default-authorized-route))
 
-     (reset! current-match m)
+       (not (session/perms-ok? (rh/route-perms m)))
+       (do
+         (reset! current-match (match-by-name default-unauthorized-route))
+         (rh/redirect! default-unauthorized-route))
+
+       :else
+       (reset! current-match m))
 
      (js/console.log "Current route:" m))
 
    {:use-fragment true}))
-
-(defn match-by-name [-name]
-  (rf/match-by-name router -name))

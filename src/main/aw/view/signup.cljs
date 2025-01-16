@@ -9,10 +9,9 @@
 (defn validate! [state]
   (if (and ((complement str/blank?) (:password @state))
            ((complement str/blank?) (:password-repeat @state))
-           (not= (:password @state) (:password-repeat @state)))
-
-    (swap! state update :errors conj :password-match)
-    (swap! state update :errors disj :password-match))
+           (= (:password @state) (:password-repeat @state)))
+    (swap! state update :errors disj :password-match)
+    (swap! state update :errors conj :password-match))
 
   (if (data/check-password-length (:password @state))
     (swap! state update :errors disj :password-too-short)

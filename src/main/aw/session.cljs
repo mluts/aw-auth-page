@@ -4,16 +4,16 @@
    [clojure.set :as set]
    [reagent.core :as r]))
 
-(def unauthorized-session {:perms #{:unauthorized-only}})
-(def authorized-session {:perms #{:authorized-only}})
+(def unauthorized-perms #{:unauthorized-only})
+(def authorized-perms #{:authorized-only})
 
-(def session (r/atom unauthorized-session))
+(def session (r/atom {:perms unauthorized-perms}))
 
 (defn authorize! []
-  (reset! session authorized-session))
+  (swap! session update :perms set/union authorized-perms))
 
 (defn deauthorize! []
-  (reset! session unauthorized-session)
+  (swap! session assoc :perms unauthorized-perms)
   (rh/redirect! :aw/signin))
 
 (defn perms-ok?
@@ -21,6 +21,8 @@
   ([user-perms object-perms]
    (set/superset? (or user-perms #{}) (or object-perms #{}))))
 
-(comment
- (deref session)
- (perms-ok? #{:autho}))
+(defn authorized? []
+  (set/subset? authorized-perms (:perms @session)))
+
+(defn unauthorized? []
+  (set/subset? unauthorized-perms (:perms @session)))

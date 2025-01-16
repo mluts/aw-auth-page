@@ -1,13 +1,8 @@
 (ns aw.app
   (:require
-   [aw.session :as session]
    [aw.router :as router]
-   [aw.view.signin :as signin]))
+   [aw.route-helpers :as rh]))
 
 (defn app []
-  (let [{:keys [view perms]} (:data @router/current-match)]
-    [:main {:class "container"}
-
-     (if (session/perms-ok? perms)
-       [view]
-       [signin/view])]))
+  (let [view (rh/route-view @router/current-match)]
+    [:main {:class "container"} [view]]))
