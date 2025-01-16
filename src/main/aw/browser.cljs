@@ -1,8 +1,6 @@
 (ns aw.browser
   (:require
-   [reagent.core :as r]
    [reagent.dom :as rdom]
-   [clojure.string :as str]
    [aw.app :as app]
    [aw.router :as router]))
 
